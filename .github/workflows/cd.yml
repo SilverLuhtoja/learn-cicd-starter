@@ -21,12 +21,6 @@ jobs:
       - name: build app
         run: scripts/buildprod.sh
 
-  gc-builder:
-    # Add "id-token" with the intended permissions.
-    name: GoogleCloudBuilder
-    runs-on: ubuntu-latest
-
-    steps:
       - id: 'auth'
         uses: 'google-github-actions/auth@v2'
         with:
