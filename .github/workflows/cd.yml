@@ -21,29 +21,16 @@ jobs:
       - name: build app
         run: scripts/buildprod.sh
 
-  gc-artifact:
-      name: PushToRegistry
-      runs-on: ubuntu-latest
-
-      # Add "id-token" with the intended permissions.
-      permissions:
-        contents: 'read'
-        id-token: 'write'
-
-      steps:
-      - id: 'auth'
-        uses: 'google-github-actions/auth@v2'
+      - id: auth
+        uses: google-github-actions/auth@v2
         with:
-          credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
+          credentials_json: ${{ secrets.GCP_CREDENTIALS }}
 
+      - name: Set up Cloud SDK
+        uses: google-github-actions/setup-gcloud@v2
 
-      - name: 'Set up Cloud SDK'
-        uses: 'google-github-actions/setup-gcloud@v2'
-        with:
-          version: '>= 363.0.0'
+      - name: Use gcloud CLI
+        run: gcloud info
 
-      - name: 'Use gcloud CLI'
-        run: 'gcloud info'
-      
-      - name: build imgae to gcloud-ar
+      - name: Build and push Docker image
         run: $ gcloud builds submit --tag us-central1-docker.pkg.dev/notely-413019/notely-ar-repo/notely:latest .
