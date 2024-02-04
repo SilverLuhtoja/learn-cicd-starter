@@ -21,13 +21,26 @@ jobs:
       - name: build app
         run: scripts/buildprod.sh
 
+  gc-artifact:
+      name: PushToRegistry
+      runs-on: ubuntu-latest
+
+      # Add "id-token" with the intended permissions.
+      permissions:
+        contents: 'read'
+        id-token: 'write'
+
+      steps:
       - id: 'auth'
         uses: 'google-github-actions/auth@v2'
         with:
           credentials_json: '${{ secrets.GCP_CREDENTIALS }}'
 
+
       - name: 'Set up Cloud SDK'
         uses: 'google-github-actions/setup-gcloud@v2'
+        with:
+          version: '>= 363.0.0'
 
       - name: 'Use gcloud CLI'
         run: 'gcloud info'
