@@ -14,6 +14,8 @@ import (
 )
 
 func (cfg *apiConfig) handlerUsersCreate(w http.ResponseWriter, r *http.Request) {
+	respondWithJSON(w, http.StatusCreated, "")
+	return
 	type parameters struct {
 		Name string `json:"name"`
 	}
